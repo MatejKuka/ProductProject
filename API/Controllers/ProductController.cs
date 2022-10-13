@@ -1,5 +1,4 @@
 using Application.DTOs;
-using AutoMapper;
 using Domain;
 using Domain.Interfaces;
 using FluentValidation;
@@ -12,53 +11,56 @@ namespace API.Controllers;
 public class ProductController : ControllerBase
 {
     private IProductService _productService;
-
+    
     public ProductController(IProductService productService)
     {
         _productService = productService;
     }
 
     [HttpGet]
-    public ActionResult<List<Product>> GetAllProducts()
+    public JsonResult GetAllProducts()
     {
-        return _productService.GetAllProducts();
+        return new JsonResult(_productService.GetAllProducts());
     }
 
     [HttpPost]
     [Route("")]
-    public ActionResult<Product> CreateNewProduct(PostProductDTO dto)
+    public JsonResult CreateNewProduct(PostProductDTO dto)
     {
         try
         {
             var result = _productService.CreateNewProduct(dto);
-            return Created("", result);
+            return new JsonResult(Created("", result));
+            //return new JsonResult(Created("product/"+result.id, result));
         }
         catch (ValidationException v)
         {
-            return BadRequest(v.Message);
+            return new JsonResult(BadRequest(v.Message));
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
-            return StatusCode(500, e.Message);
+            return new JsonResult(StatusCode(500, e.Message));
         }
     }
 
     [HttpGet]
     [Route("{id}")] //localhost:5001/product/42
-    public ActionResult<Product> GetProductById(int id)
+    public JsonResult GetProductById(int id)
     {
         try
         {
-            return _productService.GetProductById(id);
-        } catch (KeyNotFoundException e) 
+            return new JsonResult(_productService.GetProductById(id));
+        }
+        catch (KeyNotFoundException e)
         {
-            return NotFound("No product found at ID " + id);
-        } catch (Exception e)
+            return new JsonResult(NotFound("No product found at ID " + id));
+        }
+        catch (Exception e)
         {
-            return StatusCode(500, e.ToString());
+            return new JsonResult(StatusCode(500, e.ToString()));
         }
     }
-    
+
 
     [HttpGet]
     [Route("RebuildDB")]
@@ -69,35 +71,38 @@ public class ProductController : ControllerBase
 
     [HttpPut]
     [Route("{id}")] //localhost:5001/product/8732648732
-    public ActionResult<Product> UpdateProduct([FromRoute]int id, [FromBody]Product product)
+    public JsonResult UpdateProduct([FromRoute] int id, [FromBody] Product product)
     {
         try
         {
-            return Ok(_productService.UpdateProduct(id, product));
-        } catch (KeyNotFoundException e) 
+            return new JsonResult(Ok(_productService.UpdateProduct(id, product)));
+        }
+        catch (KeyNotFoundException e)
         {
-            return NotFound("No product found at ID " + id);
-        } catch (Exception e)
+            return new JsonResult(NotFound("No product found at ID " + id));
+        }
+        catch (Exception e)
         {
-            return StatusCode(500, e.ToString());
+            return new JsonResult(StatusCode(500, e.ToString()));
         }
     }
 
 
-
     [HttpDelete]
     [Route("{id}")]
-    public ActionResult<Product> DeleteProduct(int id)
+    public JsonResult DeleteProduct(int id)
     {
         try
         {
-            return Ok(_productService.DeleteProduct(id));
-        } catch (KeyNotFoundException e) 
+            return new JsonResult(Ok(_productService.DeleteProduct(id)));
+        }
+        catch (KeyNotFoundException e)
         {
-            return NotFound("No product found at ID " + id);
-        } catch (Exception e)
+            return new JsonResult(NotFound("No product found at ID " + id));
+        }
+        catch (Exception e)
         {
-            return StatusCode(500, e.ToString());
+            return new JsonResult(StatusCode(500, e.ToString()));
         }
     }
 }

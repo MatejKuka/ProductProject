@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Application.DTOs;
+﻿using Application.DTOs;
 using Application.Interfaces;
 using AutoMapper;
 using Domain;
@@ -41,7 +40,6 @@ public class ProductService : IProductService
             throw new ValidationException(validation.ToString());
 
         return _productRepository.CreateNewProduct(_mapper.Map<Product>(dto));
-
     }
 
     public Product GetProductById(int id)
@@ -62,12 +60,10 @@ public class ProductService : IProductService
         if (!validation.IsValid)
             throw new ValidationException(validation.ToString());
         return _productRepository.UpdateProduct(product);
-
     }
 
     public Product DeleteProduct(int id)
     {
         return _productRepository.DeleteProduct(id);
     }
-
 }

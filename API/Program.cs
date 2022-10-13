@@ -1,13 +1,9 @@
-using System.Net.Mime;
-using System.Reflection;
 using Application.DTOs;
-using Application.Validators;
 using AutoMapper;
 using Domain;
 using FluentValidation;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
