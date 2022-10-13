@@ -18,6 +18,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+    [Route("products")]
     public JsonResult GetAllProducts()
     {
         return new JsonResult(_productService.GetAllProducts());
@@ -31,7 +32,6 @@ public class ProductController : ControllerBase
         {
             var result = _productService.CreateNewProduct(dto);
             return new JsonResult(Created("", result));
-            //return new JsonResult(Created("product/"+result.id, result));
         }
         catch (ValidationException v)
         {

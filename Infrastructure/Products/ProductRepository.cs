@@ -5,14 +5,13 @@ namespace Infrastructure;
 
 public class ProductRepository : IProductRepository
 {
+    private readonly ProductDbContext _context;
 
-    private readonly ProductDbContext _context; 
-    
     public ProductRepository(ProductDbContext context)
     {
         _context = context;
     }
-    
+
     public List<Product> GetAllProducts()
     {
         return _context.ProductTable.ToList();
@@ -35,7 +34,7 @@ public class ProductRepository : IProductRepository
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
     }
-    
+
     public Product UpdateProduct(Product product)
     {
         _context.ProductTable.Update(product);
